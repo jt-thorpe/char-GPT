@@ -1,0 +1,10 @@
+batch_size: 64
+block_size: 48
+max_iters: 10000
+eval_interval: 250
+learning_rate: 0.0003
+n_embd: 64
+n_head: 4
+n_layer: 4
+dropout: 0.2
+eval_iters: 20
