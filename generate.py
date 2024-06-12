@@ -11,7 +11,7 @@ from utils.evaluation_utils import generate_text
 torch.manual_seed(1337)
 
 # Load configuration
-config = load_config()
+config = load_config('configs/version_2.yaml')  # TODO: feat: specify configs from cli
 
 # Hyperparameters and device setup
 block_size = config['block_size']
@@ -29,8 +29,8 @@ model = BigramLanguageModel(vocab_size, config['n_embd'], config['n_head'],
                             config['n_layer'], block_size, config['dropout']).to(device)
 
 # Load the best model checkpoint
-checkpoint_path = 'checkpoints/best_model.pth'
-model.load_state_dict(torch.load(checkpoint_path))
+checkpoint_path = 'checkpoints/version_2.pth'  # TODO: feat: specify model from cli
+model.load_state_dict(torch.load(checkpoint_path))  # map_location=torch.device('cpu')
 
 # Set up argument parser
 parser = argparse.ArgumentParser(description='Generate text with different temperatures.')

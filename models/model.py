@@ -29,7 +29,7 @@ class BigramLanguageModel(nn.Module):
         super().__init__()
         self.token_embedding_table = nn.Embedding(vocab_size, n_embd)
         self.position_embedding_table = nn.Embedding(block_size, n_embd)
-        self.blocks = nn.Sequential(*[TransformerBlock(n_embd, n_head, dropout) for _ in range(n_layer)])
+        self.blocks = nn.Sequential(*[TransformerBlock(n_head, n_embd, block_size, dropout) for _ in range(n_layer)])
         self.ln_f = nn.LayerNorm(n_embd)  # Final layer normalisation
         self.lm_head = nn.Linear(n_embd, vocab_size)  # Linear model head: embedding -> logits
 

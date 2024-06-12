@@ -10,7 +10,7 @@ from utils.training_utils import estimate_loss, train
 torch.manual_seed(1337)
 
 # Load configuration
-config = load_config()
+config = load_config('configs/version_2.yaml')  # TODO: feat: specify configs from cli
 
 # Hyperparameters and device setup
 batch_size = config['batch_size']

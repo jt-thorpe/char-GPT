@@ -49,7 +49,7 @@ class Head(nn.Module):
 class MultiHeadAttention(nn.Module):
     """Multi-head attention layer."""
 
-    def __init__(self, num_heads: int, head_size: int, n_embd: int, dropout: float):
+    def __init__(self, n_heads: int, n_embd: int, head_size: int, block_size: int, dropout: float):
         """Initialise the multi-head attention layer.
 
         Args:
@@ -59,8 +59,8 @@ class MultiHeadAttention(nn.Module):
             dropout (float): The dropout rate.
         """
         super().__init__()
-        self.heads = nn.ModuleList([Head(n_embd, head_size, n_embd, dropout) for _ in range(num_heads)])
-        self.proj = nn.Linear(num_heads * head_size, n_embd)
+        self.heads = nn.ModuleList([Head(n_embd, head_size, block_size, dropout) for _ in range(n_heads)])
+        self.proj = nn.Linear(n_heads * head_size, n_embd)
         self.dropout = nn.Dropout(dropout)
 
     def forward(self, x: torch.Tensor) -> torch.Tensor:

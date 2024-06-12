@@ -19,7 +19,7 @@ class TransformerBlock(nn.Module):
     It is on a per-token basis, rather than a per-batch basis.
     """
 
-    def __init__(self, n_embd: int, n_head: int, dropout: float):
+    def __init__(self, n_head: int, n_embd: int, block_size: int, dropout: float):
         """Initialises the TransformerBlock.
 
         Args:
@@ -28,9 +28,9 @@ class TransformerBlock(nn.Module):
             dropout (float): The dropout rate.
         """
         super().__init__()
-        head_size = n_embd // n_head
+        head_size = n_embd // n_head  # passed into multi-head
         self.ln1 = nn.LayerNorm(n_embd)
-        self.self_attention = MultiHeadAttention(n_head, head_size, n_embd, dropout)
+        self.self_attention = MultiHeadAttention(n_head, n_embd, head_size, block_size, dropout)
         self.ln2 = nn.LayerNorm(n_embd)
         self.ffwd = FeedForwardNetwork(n_embd, dropout)
 

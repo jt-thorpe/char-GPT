@@ -1,4 +1,5 @@
 import torch
+
 from models.model import BigramLanguageModel
 from utils.config import load_config
 from utils.data_utils import create_vocab, load_data
@@ -8,7 +9,7 @@ from utils.training_utils import estimate_loss
 torch.manual_seed(1337)
 
 # Load configuration
-config = load_config()
+config = load_config('configs/version_2.yaml')  # TODO: feat: specify configs from cli
 
 # Hyperparameters and device setup
 batch_size = config['batch_size']
@@ -44,7 +45,7 @@ model = BigramLanguageModel(vocab_size, config['n_embd'], config['n_head'],
                             config['n_layer'], block_size, config['dropout']).to(device)
 
 # Load the best model checkpoint
-checkpoint_path = 'checkpoints/best_model.pth'
+checkpoint_path = 'checkpoints/version_2.pth'  # TODO: feat: specify model from cli
 model.load_state_dict(torch.load(checkpoint_path))
 
 # Evaluate the model
