@@ -14,7 +14,16 @@ torch.manual_seed(1337)
 config = load_config('configs/version_2.yaml')  # TODO: feat: specify configs from cli
 
 # Hyperparameters and device setup
+batch_size = config['batch_size']
 block_size = config['block_size']
+max_iters = config['max_iters']
+eval_interval = config['eval_interval']
+learning_rate = config['learning_rate']
+n_embd = config['n_embd']
+n_head = config['n_head']
+n_layer = config['n_layer']
+dropout = config['dropout']
+eval_iters = config['eval_iters']
 device = 'cuda' if torch.cuda.is_available() else 'cpu'
 
 # Load and preprocess data
@@ -25,12 +34,12 @@ with open('./data/tiny_shakespeare/input.txt', 'r', encoding='utf-8') as f:
 vocab_size, stoi, itos = create_vocab(text)
 
 # Initialize model
-model = BigramLanguageModel(vocab_size, config['n_embd'], config['n_head'],
-                            config['n_layer'], block_size, config['dropout']).to(device)
+model = BigramLanguageModel(vocab_size, n_embd, n_head,
+                            n_layer, block_size, dropout).to(device)
 
 # Load the best model checkpoint
-checkpoint_path = 'checkpoints/version_2.pth'  # TODO: feat: specify model from cli
-model.load_state_dict(torch.load(checkpoint_path))  # map_location=torch.device('cpu')
+checkpoint_path = 'checkpoints/best_model.pth'  # TODO: feat: specify model from cli
+model.load_state_dict(torch.load(checkpoint_path, map_location=device))  # map_location=torch.device('cpu')
 
 # Set up argument parser
 parser = argparse.ArgumentParser(description='Generate text with different temperatures.')
