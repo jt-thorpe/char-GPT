@@ -35,14 +35,14 @@ class Head(nn.Module):
             out: (B, T, head_size) tensor of output data
         """
         B, T, C = x.shape
-        k = self.key(x)
-        q = self.query(x)
-        v = self.value(x)
-        wei = q @ k.transpose(-2, -1) * k.shape[-1]**-0.5
-        wei = wei.masked_fill(self.tril[:T, :T] == 0, float('-inf'))
-        wei = nn.functional.softmax(wei, dim=-1)
+        k = self.key(x)  # (B,T,hs)
+        q = self.query(x)  # (B,T,hs)
+        v = self.value(x)  # (B,T,hs)
+        wei = q @ k.transpose(-2, -1) * k.shape[-1]**-0.5  # (B, T, hs) @ (B, hs, T) -> (B, T, T)
+        wei = wei.masked_fill(self.tril[:T, :T] == 0, float('-inf'))  # (B, T, T)
+        wei = nn.functional.softmax(wei, dim=-1)  # (B, T, T)
         wei = self.dropout(wei)
-        out = wei @ v
+        out = wei @ v  # (B, T, T) @ (B, T, hs) -> (B, T, hs)
         return out
 
 
